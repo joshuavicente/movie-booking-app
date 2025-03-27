@@ -23,11 +23,16 @@ export const Logout = () => {
   }, [logout, navigate]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <main
+      className="min-h-screen flex items-center justify-center bg-gray-100"
+      aria-label="Logging out page"
+    >
       <div className="flex flex-col items-center justify-center gap-3 h-40">
         <LoadingSpinner />
-        <p className="text-gray-700 text-lg">Logging out...</p>
+        <output className="text-gray-700 text-lg" aria-live="polite">
+          Logging out...
+        </output>
       </div>
-    </div>
+    </main>
   );
 };

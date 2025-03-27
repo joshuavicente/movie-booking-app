@@ -1,7 +1,14 @@
 export const LoadingSpinner = () => {
   return (
-    <div className="h-screen flex justify-center items-center">
-      <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"></div>
-    </div>
+    <output
+      className="h-screen flex justify-center items-center"
+      aria-live="polite"
+      aria-label="Content loading"
+    >
+      <div
+        className="h-10 w-10 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"
+        aria-hidden="true"
+      ></div>
+    </output>
   );
 };

@@ -29,7 +29,11 @@ export const MovieCard = ({ movie }: Props) => {
   };
 
   return (
-    <div className="rounded-lg bg-white shadow-md p-5 border border-gray-200">
+    <fieldset
+      className="rounded-lg bg-white shadow-md p-5 border border-gray-200"
+      role="group"
+      aria-label={`Movie card for ${movie.title}`}
+    >
       {/* Movie Title */}
       <h2 className="text-xl font-semibold mb-2">{movie.title}</h2>
 
@@ -47,9 +51,10 @@ export const MovieCard = ({ movie }: Props) => {
         className="w-full rounded bg-blue-600 text-white py-2 hover:bg-blue-700 transition"
         onClick={handleBooking}
         disabled={movie.availableSeats <= 0}
+        aria-disabled={movie.availableSeats <= 0}
       >
         {movie.availableSeats > 0 ? "Book Now" : "Sold Out"}
       </button>
-    </div>
+    </fieldset>
   );
 };

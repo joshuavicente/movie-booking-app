@@ -9,18 +9,24 @@ export const MyBookings = () => {
   };
 
   return (
-    <div className="p-6">
+    <main className="p-6" role="main">
       <h1 className="text-2xl font-bold mb-4">My Bookings</h1>
 
       {/* Show message if there are no bookings */}
       {bookings.length === 0 ? (
-        <p className="text-gray-600">You have no bookings yet.</p>
+        <p className="text-gray-600" aria-live="polite">
+          You have no bookings yet.
+        </p>
       ) : (
-        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <div
+          className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+          aria-label="List of booked movies"
+        >
           {bookings.map((booking) => (
             <div
               key={booking.id}
               className="rounded-lg bg-white shadow-md p-5 border border-gray-200"
+              aria-label={`Booking card for ${booking.movieTitle}`}
             >
               <h2 className="text-lg font-semibold mb-2">
                 {booking.movieTitle}
@@ -39,6 +45,6 @@ export const MyBookings = () => {
           ))}
         </div>
       )}
-    </div>
+    </main>
   );
 };
