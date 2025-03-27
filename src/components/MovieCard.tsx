@@ -1,4 +1,6 @@
+import { useBooking } from "../context/BookingContext";
 import { Movie } from "../hooks/useFetchMovies";
+import { nanoid } from "nanoid";
 
 // Define the props that this component will receive
 type Props = Readonly<{
@@ -6,6 +8,26 @@ type Props = Readonly<{
 }>;
 
 export const MovieCard = ({ movie }: Props) => {
+  const { addBooking } = useBooking();
+
+  const handleBooking = () => {
+    if (movie.availableSeats <= 0) {
+      alert("No seats available for this movie.");
+      return;
+    }
+
+    const newBooking = {
+      id: nanoid(),
+      movieId: movie.id,
+      movieTitle: movie.title,
+      showtime: movie.showtime,
+      seatCount: 1, // Currently fixed to 1 seat per booking
+    };
+
+    addBooking(newBooking);
+    alert(`Successfully booked "${movie.title}"!`);
+  };
+
   return (
     <div className="rounded-lg bg-white shadow-md p-5 border border-gray-200">
       {/* Movie Title */}
@@ -20,12 +42,13 @@ export const MovieCard = ({ movie }: Props) => {
         <span>Available Seats: {movie.availableSeats}</span>
       </div>
 
-      {/* Book Now Button (logic to be added later) */}
+      {/* Book Now Button */}
       <button
         className="w-full rounded bg-blue-600 text-white py-2 hover:bg-blue-700 transition"
-        onClick={() => alert(`Booking ${movie.title}...`)}
+        onClick={handleBooking}
+        disabled={movie.availableSeats <= 0}
       >
-        Book Now
+        {movie.availableSeats > 0 ? "Book Now" : "Sold Out"}
       </button>
     </div>
   );
