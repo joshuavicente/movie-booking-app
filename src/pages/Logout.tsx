@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useBooking } from "../context/BookingContext";
 import { LoadingSpinner } from "../components/LoadingSpinner";
@@ -7,8 +7,14 @@ export const Logout = () => {
   const { logout } = useBooking();
   const navigate = useNavigate();
 
+  const hasLoggedOut = useRef(false); // Only logout once to prevent rendering loop
+
   useEffect(() => {
-    logout(); // Clear user + bookings
+    if (!hasLoggedOut.current) {
+      logout(); // Clear user + bookings
+      hasLoggedOut.current = true;
+    }
+
     const timeout = setTimeout(() => {
       navigate("/"); // Redirect to login
     }, 1000); // Slight delay so spinner shows
@@ -18,7 +24,7 @@ export const Logout = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="flex flex-col items-center gap-3">
+      <div className="flex flex-col items-center justify-center gap-3 h-40">
         <LoadingSpinner />
         <p className="text-gray-700 text-lg">Logging out...</p>
       </div>
