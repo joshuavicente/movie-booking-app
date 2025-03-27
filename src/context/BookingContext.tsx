@@ -73,7 +73,7 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
   const value: BookingContextType = {
     bookings,
     user,
-    isLoggedIn: !!user,
+    isLoggedIn: !!user, // Converts user to a boolean, if it doesn't exist, it's false
     login,
     logout,
     addBooking,
