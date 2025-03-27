@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios"; // Using axios to fetch movie data
+import { getNowPlayingMoviesService } from "../api/moviesService";
 
 // Define the shape of a Movie
 export type Movie = {
@@ -20,14 +20,11 @@ export const useFetchMovies = () => {
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const apiKey = import.meta.env.VITE_TMDB_API_KEY; // Get the API key from .env
-        const response = await axios.get(
-          `https://api.themoviedb.org/3/movie/now_playing?api_key=${apiKey}&language=en-US&page=1`
-        );
-        await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulate 2sec fake loading delay
+        const response = await getNowPlayingMoviesService(); // Use the service function
+        await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate 2sec fake loading delay
 
         // Transform TMDB response to match our Movie type
-        const transformedMovies = response.data.results.map((movie: any) => ({
+        const transformedMovies = response.map((movie: any) => ({
           id: movie.id.toString(),
           title: movie.title,
           description: movie.overview,
