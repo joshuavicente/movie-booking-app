@@ -1,1 +1,6 @@
 @import "tailwindcss";
+
+/* Custom Visibile Outline on button focus */
+button:focus-visible {
+  outline: 2px solid black; /* Tailwind's blue-600 */
+}

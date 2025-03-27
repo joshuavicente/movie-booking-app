@@ -37,6 +37,9 @@ export const MyBookings = () => {
               </p>
               <button
                 onClick={() => handleCancelBooking(booking.id)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleCancelBooking(booking.id);
+                }}
                 className="w-full rounded bg-red-500 text-white py-2 hover:bg-red-600 transition"
               >
                 Cancel Booking
