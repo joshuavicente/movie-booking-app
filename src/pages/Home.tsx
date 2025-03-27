@@ -15,15 +15,23 @@ export const Home = () => {
       {loading && <LoadingSpinner />}
 
       {/* Error state */}
-      {error && <p className="text-red-500">{error}</p>}
+      {!loading && error && <p className="text-red-500 text-lg">⚠️ {error}</p>}
+
+      {/* Empty list state */}
+      {!loading && !error && movies.length === 0 && (
+        <p className="text-gray-600 text-lg">
+          No movies are currently available.
+        </p>
+      )}
 
       {/* Movies list */}
-      <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {/* Only show when data is available */}
-        {!loading &&
-          !error &&
-          movies.map((movie) => <MovieCard key={movie.id} movie={movie} />)}
-      </div>
+      {!loading && !error && movies.length > 0 && (
+        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {movies.map((movie) => (
+            <MovieCard key={movie.id} movie={movie} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

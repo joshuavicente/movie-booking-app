@@ -3,6 +3,11 @@ import { useBooking } from "../context/BookingContext";
 export const MyBookings = () => {
   const { bookings, cancelBooking } = useBooking();
 
+  const handleCancelBooking = (bookingId: string) => {
+    cancelBooking(bookingId);
+    alert("Cancelled booking successfully");
+  };
+
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">My Bookings</h1>
@@ -25,7 +30,7 @@ export const MyBookings = () => {
                 Seat Count: {booking.seatCount}
               </p>
               <button
-                onClick={() => cancelBooking(booking.id)}
+                onClick={() => handleCancelBooking(booking.id)}
                 className="w-full rounded bg-red-500 text-white py-2 hover:bg-red-600 transition"
               >
                 Cancel Booking
