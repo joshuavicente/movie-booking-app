@@ -24,6 +24,7 @@ export const useFetchMovies = () => {
         const response = await axios.get(
           `https://api.themoviedb.org/3/movie/now_playing?api_key=${apiKey}&language=en-US&page=1`
         );
+        await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulate 2sec fake loading delay
 
         // Transform TMDB response to match our Movie type
         const transformedMovies = response.data.results.map((movie: any) => ({
@@ -35,7 +36,6 @@ export const useFetchMovies = () => {
         }));
 
         setMovies(transformedMovies);
-
         setLoading(false);
       } catch (err) {
         console.log("Failed to fetch movies:", err);
