@@ -14,6 +14,7 @@ export const Home = () => {
       setResetting(true);
       await delay(1000); // Simulate network delay
       resetStoredData();
+      alert("Demo data reset successfully");
       window.location.reload();
     }
   };

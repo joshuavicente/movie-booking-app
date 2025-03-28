@@ -1,6 +1,6 @@
 import { useBooking } from "../context/BookingContext";
 import { useState } from "react";
-import { Booking } from "../context/BookingContext";
+import { Booking } from "../model/bookingModel";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { delay } from "../utils/delayHelper";
 

@@ -5,24 +5,9 @@ import {
   useEffect,
   ReactNode,
 } from "react";
-
-// Represents each booking. When a user books a ticket,
-// one of these gets added to the state
-export type Booking = {
-  id: string;
-  movieId: string;
-  movieTitle: string;
-  showtime: string;
-  seatCount: number;
-  availableSeats?: number;
-  username: string;
-};
-
-// Defines a mock user model with a username and password
-type User = {
-  username: string;
-  password: string;
-};
+import { userMock } from "../mocks/userMock";
+import { Booking } from "../model/bookingModel";
+import { User } from "../model/userModel";
 
 // Describes everything the context will store and expose
 type BookingContextType = {
@@ -40,10 +25,19 @@ type BookingContextType = {
 // Sets up a new Context — basically a tool that allows data sharing across components
 const BookingContext = createContext<BookingContextType | undefined>(undefined);
 
-// A fake user to use for login
-const MOCK_USER: User = {
-  username: "admin",
-  password: "password123",
+// Helper function to sync bookings to local storage by userId
+const syncBookingsToLocalStorage = (
+  userId: string,
+  updatedBookings: Booking[]
+) => {
+  const storedBookings = localStorage.getItem("allBookings");
+  const checkBookings = storedBookings ? JSON.parse(storedBookings) : []; // Prevents app from crashing with JSON.parse(null) and ensures valid JSON
+  const otherUserBookings = checkBookings.filter(
+    // Other bookings that don't belong to the current user
+    (b: Booking) => b.userId !== userId
+  );
+  const mergedBookings = [...otherUserBookings, ...updatedBookings]; // Preserves bookings of other users and merges with current user's bookings
+  localStorage.setItem("allBookings", JSON.stringify(mergedBookings));
 };
 
 // This is a wrapper component that holds the actual state and functions to share.
@@ -55,15 +49,18 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
   // This function checks if the username and password match the mock user
   // and retrieves the bookings for that user
   const login = (username: string, password: string): boolean => {
-    if (username === MOCK_USER.username && password === MOCK_USER.password) {
-      setUser({ username });
+    const foundUser = userMock.data.find(
+      (u) => u.username === username && u.password === password
+    );
+    if (foundUser) {
+      setUser({ id: foundUser.id, username: foundUser.username });
       const stored = localStorage.getItem("allBookings");
       if (stored) {
         const allBookingsStored = JSON.parse(stored) as Booking[];
-        const filtered = allBookingsStored.filter(
-          (b) => b.username === username
+        const userBookings = allBookingsStored.filter(
+          (b) => b.userId === foundUser.id
         );
-        setBookings(filtered);
+        setBookings(userBookings);
 
         // Calculate available seats for each movie for the logged-in user
         const seatMap: Record<string, number> = {};
@@ -94,12 +91,13 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
       ...booking,
       seatCount,
       username: user?.username || "",
+      userId: user?.id || "",
     };
 
     setBookings((prev) => {
-      const updated = [...prev, bookingWithUser];
-      localStorage.setItem("allBookings", JSON.stringify(updated)); // Save to local storage
-      return updated;
+      const updatedBookings = [...prev, bookingWithUser];
+      syncBookingsToLocalStorage(user?.id || "", updatedBookings);
+      return updatedBookings;
     });
 
     // Update the available seats in the map
@@ -133,7 +131,7 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
         }
         return b;
       });
-      localStorage.setItem("allBookings", JSON.stringify(updatedBookings)); // Save to local storage
+      syncBookingsToLocalStorage(user?.id || "", updatedBookings);
       return updatedBookings;
     });
   };
@@ -157,7 +155,7 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
       }));
 
       const updatedBookings = prev.filter((b) => b.id !== id);
-      localStorage.setItem("allBookings", JSON.stringify(updatedBookings)); // Save to local storage
+      syncBookingsToLocalStorage(user?.id || "", updatedBookings);
       return updatedBookings;
     });
   };

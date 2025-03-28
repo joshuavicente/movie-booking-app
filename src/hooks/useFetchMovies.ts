@@ -1,15 +1,7 @@
 import { useEffect, useState } from "react";
 import { getNowPlayingMoviesService } from "../api/moviesService";
 import { delay } from "../utils/delayHelper";
-
-// Define the shape of a Movie
-export type Movie = {
-  id: string;
-  title: string;
-  description: string;
-  availableSeats: number;
-  showtime: string;
-};
+import { Movie } from "../model/movieModel";
 
 // This hook returns loading state, error, and the movie list
 export const useFetchMovies = () => {

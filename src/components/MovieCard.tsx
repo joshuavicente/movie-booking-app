@@ -1,14 +1,9 @@
 import { useState } from "react";
 import { useBooking } from "../context/BookingContext";
-import { Movie } from "../hooks/useFetchMovies";
 import { nanoid } from "nanoid";
+import { MovieCardProps } from "../model/movieModel";
 
-// Define the props that this component will receive
-type Props = Readonly<{
-  movie: Movie;
-}>;
-
-export const MovieCard = ({ movie }: Props) => {
+export const MovieCard = ({ movie }: MovieCardProps) => {
   const { bookings, addBooking, movieSeatMap } = useBooking();
   const [seatCount, setSeatCount] = useState(1);
 
