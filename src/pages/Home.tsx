@@ -8,6 +8,14 @@ export const Home = () => {
   // Use custom hook to fetch movies from TMDB
   const { movies, loading, error, resetStoredData } = useFetchMovies();
   const [resetting, setResetting] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const moviesPerPage = 10;
+
+  const indexOfLastMovie = currentPage * moviesPerPage;
+  const indexOfFirstMovie = indexOfLastMovie - moviesPerPage;
+  const currentMovies = movies.slice(indexOfFirstMovie, indexOfLastMovie);
+
+  const totalPages = Math.ceil(movies.length / moviesPerPage);
 
   const handleResetStoredData = async () => {
     if (window.confirm("Are you sure you want to reset the demo data?")) {
@@ -21,8 +29,21 @@ export const Home = () => {
 
   return (
     <main className="p-6" role="main">
-      {/* Page heading */}
-      <h1 className="text-2xl font-bold mb-4">Now Playing</h1>
+      <div>
+        {/* Page heading */}
+        <h1 className="text-2xl font-bold mb-4">Now Playing</h1>
+
+        {/* Reset Local Stored Data */}
+        <div className="mb-4 flex justify-end">
+          <button
+            onClick={() => handleResetStoredData()}
+            disabled={resetting} // Disable button while resetting
+            className="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600"
+          >
+            Reset Demo
+          </button>
+        </div>
+      </div>
 
       {/* Show spinner on loading state*/}
       {(loading || resetting) && <LoadingSpinner />}
@@ -41,29 +62,51 @@ export const Home = () => {
         </p>
       )}
 
-      {/* Reset Local Stored Data */}
-      <div className="mb-4 flex justify-end">
-        <button
-          onClick={() => handleResetStoredData()}
-          disabled={resetting} // Disable button while resetting
-          className="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600"
-        >
-          Reset Demo
-        </button>
-      </div>
-
       {/* Movies list */}
-      {!loading && !error && movies.length > 0 && (
-        <div
-          className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5"
-          aria-label="Now Playing Movies"
-        >
-          {movies.map((movie) => (
-            <div key={movie.id} aria-label={`Movie card for ${movie.title}`}>
-              <MovieCard movie={movie} />
-            </div>
-          ))}
-        </div>
+      {!loading && !error && currentMovies.length > 0 && (
+        <>
+          {/* Pagination Controls */}
+          <div className="flex justify-center mt-6 gap-2 mb-6">
+            <button
+              onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+              disabled={currentPage === 1}
+              className="px-3 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
+            >
+              Prev
+            </button>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
+              <button
+                key={num}
+                onClick={() => setCurrentPage(num)}
+                className={`px-3 py-1 text-sm rounded ${
+                  num === currentPage
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-200 hover:bg-gray-300"
+                }`}
+              >
+                {num}
+              </button>
+            ))}
+            <button
+              onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+              disabled={currentPage === totalPages}
+              className="px-3 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
+            >
+              Next
+            </button>
+          </div>
+
+          <div
+            className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5"
+            aria-label="Now Playing Movies"
+          >
+            {currentMovies.map((movie) => (
+              <div key={movie.id} aria-label={`Movie card for ${movie.title}`}>
+                <MovieCard movie={movie} />
+              </div>
+            ))}
+          </div>
+        </>
       )}
     </main>
   );
