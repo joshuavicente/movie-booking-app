@@ -11,7 +11,7 @@ export const Login = () => {
   const [error, setError] = useState("");
 
   // Handle form submission and trigger login logic
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     // Validate that both username and password are provided

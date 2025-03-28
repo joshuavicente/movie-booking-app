@@ -54,7 +54,7 @@ npm run dev
 - ⚛️ React 19 + Vite
 - 💨 Tailwind CSS
 - 🟦 TypeScript
-- 🧠 React Context API for global state management
+- 🧠 React Context API with built-in and custom hooks for global state, performance optimization and logic
 - 🗂️ LocalStorage (no backend)
 - 🍿 TMDB API (for movies)
 - 🔄 React Router
