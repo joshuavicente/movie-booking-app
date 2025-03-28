@@ -5,6 +5,7 @@ export type Movie = {
   description: string;
   availableSeats: number;
   showtime: string;
+  poster: string;
 };
 
 // Define the props that MovieCard component will receive

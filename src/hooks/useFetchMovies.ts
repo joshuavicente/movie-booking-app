@@ -30,8 +30,8 @@ export const useFetchMovies = () => {
           description: movie.overview,
           showtime: "7:00 PM",
           availableSeats: 50,
+          poster: movie.poster_path,
         }));
-
         setMovies(transformedMovies);
         localStorage.setItem("movies", JSON.stringify(transformedMovies));
         setLoading(false);
