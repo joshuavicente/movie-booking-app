@@ -2,24 +2,35 @@ import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useBooking } from "../context/BookingContext";
 import { LoadingSpinner } from "../components/LoadingSpinner";
+import { delay } from "../utils/delayHelper";
 
 export const Logout = () => {
   const { logout } = useBooking();
   const navigate = useNavigate();
 
-  const hasLoggedOut = useRef(false); // Only logout once to prevent rendering loop
+  const hasLoggedOut = useRef(false); // Prevents logout() from being called infinite times and ensure single logout
 
   useEffect(() => {
-    if (!hasLoggedOut.current) {
-      logout(); // Clear user + bookings
-      hasLoggedOut.current = true;
-    }
+    let isMounted = true; // Prevents navigate("/") from being called after component unmount
 
-    const timeout = setTimeout(() => {
-      navigate("/"); // Redirect to login
-    }, 1000); // Slight delay so spinner shows
+    const logoutAndRedirect = async () => {
+      if (!hasLoggedOut.current) {
+        logout(); // Clear user + bookings
+        hasLoggedOut.current = true;
+      }
 
-    return () => clearTimeout(timeout); // Cancels the timeout by returning the function if the component unmounts before it fires
+      await delay(1000);
+
+      if (isMounted) {
+        navigate("/"); // Redirect to login
+      }
+    };
+
+    logoutAndRedirect();
+
+    return () => {
+      isMounted = false;
+    };
   }, [logout, navigate]);
 
   return (

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useBooking } from "../context/BookingContext";
 import { Movie } from "../hooks/useFetchMovies";
 import { nanoid } from "nanoid";
@@ -8,11 +9,22 @@ type Props = Readonly<{
 }>;
 
 export const MovieCard = ({ movie }: Props) => {
-  const { addBooking } = useBooking();
+  const { bookings, addBooking, movieSeatMap } = useBooking();
+  const [seatCount, setSeatCount] = useState(1);
+
+  const availableSeats = movieSeatMap[movie.id] ?? movie.availableSeats;
 
   const handleBooking = () => {
-    if (movie.availableSeats <= 0) {
-      alert("No seats available for this movie.");
+    if (availableSeats < seatCount) {
+      alert("Not enough seats available.");
+      return;
+    }
+
+    const existingBooking = bookings.find((b) => b.movieId === movie.id);
+    if (existingBooking) {
+      alert(
+        "You've already booked this movie. Please update it from My Bookings."
+      );
       return;
     }
 
@@ -21,11 +33,13 @@ export const MovieCard = ({ movie }: Props) => {
       movieId: movie.id,
       movieTitle: movie.title,
       showtime: movie.showtime,
-      seatCount: 1, // Currently fixed to 1 seat per booking
+      seatCount,
+      availableSeats,
     };
 
     addBooking(newBooking);
-    alert(`Successfully booked "${movie.title}"!`);
+    alert(`Successfully booked ${seatCount} seat(s) for "${movie.title}"`);
+    setSeatCount(1);
   };
 
   return (
@@ -34,26 +48,33 @@ export const MovieCard = ({ movie }: Props) => {
       role="group"
       aria-label={`Movie card for ${movie.title}`}
     >
-      {/* Movie Title */}
       <h2 className="text-xl font-semibold mb-2">{movie.title}</h2>
-
-      {/* Movie Description */}
       <p className="text-gray-700 mb-3 line-clamp-3">{movie.description}</p>
 
-      {/* Showtime and Seats info */}
-      <div className="flex items-center justify-between text-sm text-gray-600 mb-4">
+      <div className="flex items-center justify-between text-sm text-gray-600 mb-2">
         <span>Showtime: {movie.showtime}</span>
-        <span>Available Seats: {movie.availableSeats}</span>
+        <span>Available Seats: {availableSeats}</span>
       </div>
 
-      {/* Book Now Button */}
+      <label htmlFor={`seat-${movie.id}`} className="text-sm block mb-1">
+        Select number of seats (max 10):
+      </label>
+      <input
+        id={`seat-${movie.id}`}
+        type="number"
+        min={1}
+        max={10}
+        value={seatCount}
+        onChange={(e) => setSeatCount(Math.min(Number(e.target.value), 10))}
+        className="mb-3 w-24 rounded border p-1 text-sm"
+      />
+
       <button
-        className="w-full rounded bg-blue-600 text-white py-2 hover:bg-blue-700 transition"
+        className="w-full rounded bg-blue-600 text-white py-2 hover:bg-blue-700 transition disabled:opacity-50"
         onClick={handleBooking}
-        disabled={movie.availableSeats <= 0}
-        aria-disabled={movie.availableSeats <= 0}
+        disabled={availableSeats <= 0}
       >
-        {movie.availableSeats > 0 ? "Book Now" : "Sold Out"}
+        {availableSeats > 0 ? "Book Now" : "Sold Out"}
       </button>
     </fieldset>
   );

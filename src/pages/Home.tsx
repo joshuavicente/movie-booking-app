@@ -4,14 +4,14 @@ import { LoadingSpinner } from "../components/LoadingSpinner";
 
 export const Home = () => {
   // Use custom hook to fetch movies from TMDB
-  const { movies, loading, error } = useFetchMovies();
+  const { movies, loading, error, resetStoredData } = useFetchMovies();
 
   return (
     <main className="p-6" role="main">
       {/* Page heading */}
       <h1 className="text-2xl font-bold mb-4">Now Playing</h1>
 
-      {/* Loading state */}
+      {/* Show spinner on loading state*/}
       {loading && <LoadingSpinner />}
 
       {/* Error state */}
@@ -27,6 +27,23 @@ export const Home = () => {
           No movies are currently available.
         </p>
       )}
+
+      {/* Reset Local Stored Data */}
+      <div className="mb-4 flex justify-end">
+        <button
+          onClick={() => {
+            if (
+              window.confirm("Are you sure you want to reset the demo data?")
+            ) {
+              resetStoredData();
+              window.location.reload();
+            }
+          }}
+          className="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600"
+        >
+          Reset Demo
+        </button>
+      </div>
 
       {/* Movies list */}
       {!loading && !error && movies.length > 0 && (
