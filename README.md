@@ -1,54 +1,78 @@
-# React + TypeScript + Vite
+# 🎬 Movie Booking App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple and modern movie ticket booking app built with React, TypeScript, and Vite. This demo allows users to view movies (fetched from TMDB), book tickets, update or cancel them — all within a fully client-side experience using local storage.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Getting Started
 
-## Expanding the ESLint configuration
+### 1. Clone the repo
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```bash
+git clone https://github.com/your-username/movie-booking-app.git
+cd movie-booking-app
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2. Install dependencies
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```bash
+npm install
 ```
+
+### 3. Add your TMDB API key
+
+Create a `.env` file in the root and paste:
+
+```
+VITE_TMDB_API_KEY=your_tmdb_api_key_here
+```
+
+> You can get one at [themoviedb.org](https://www.themoviedb.org/).
+
+### 4. Run the app
+
+```bash
+npm run dev
+```
+
+---
+
+## 🧠 Features
+
+- Browse “Now Playing” movies from TMDB
+- Book tickets with seat selection (max 10)
+- Update or cancel bookings
+- Pagination and responsive UI
+- Persistent booking data using `localStorage`
+- Mock user authentication with multiple test accounts (bookings saved per user)
+- Demo reset button
+
+---
+
+## 🛠️ Tech Stack
+
+- ⚛️ React 19 + Vite
+- 💨 Tailwind CSS
+- 🟦 TypeScript
+- 🧠 React Context API for global state management
+- 🗂️ LocalStorage (no backend)
+- 🍿 TMDB API (for movies)
+- 🔄 React Router
+- 🧪 ESLint + Prettier
+
+---
+
+## 📂 .env Setup
+
+```env
+VITE_TMDB_API_KEY=your_tmdb_api_key_here
+```
+
+Be sure to **never commit your actual `.env` file** — it's already `.gitignore`'d.
+Use `.env.example` as a template.
+
+---
+
+## 👏 Credits
+
+Built by your truly using the TMDB API.
