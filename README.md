@@ -35,6 +35,8 @@ VITE_TMDB_API_KEY=your_tmdb_api_key_here
 npm run dev
 ```
 
+The app will start locally on [http://localhost:5173](http://localhost:5173) by default.
+
 ---
 
 ## 🧠 Features
