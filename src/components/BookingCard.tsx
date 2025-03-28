@@ -1,6 +1,7 @@
+import { memo } from "react";
 import { BookingCardProps } from "../model/bookingModel";
 
-export const BookingCard = ({
+const BookingCardComponent = ({
   booking,
   seatCount,
   isUpdating,
@@ -50,3 +51,6 @@ export const BookingCard = ({
     </div>
   );
 };
+
+// Using memo which helps to prevent unnecessary re-renders of the component.
+export const BookingCard = memo(BookingCardComponent);
