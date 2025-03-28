@@ -1,5 +1,5 @@
 import { useBooking } from "../context/BookingContext";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Booking } from "../model/bookingModel";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { BookingCard } from "../components/BookingCard";
@@ -13,31 +13,37 @@ export const MyBookings = () => {
   const [cancellingId, setCancellingId] = useState<string | null>(null);
 
   // Handle booking update with simulated delay
-  const handleUpdateBooking = async (booking: Booking) => {
-    const updatedCount = seatUpdates[booking.id] ?? booking.seatCount;
-    setUpdatingId(booking.id);
-    await delay(1000);
-    updateBooking(booking.id, { seatCount: updatedCount });
-    alert("Booking updated successfully");
+  const handleUpdateBooking = useCallback(
+    async (booking: Booking) => {
+      const updatedCount = seatUpdates[booking.id] ?? booking.seatCount;
+      setUpdatingId(booking.id);
+      await delay(1000);
+      updateBooking(booking.id, { seatCount: updatedCount });
+      alert("Booking updated successfully");
 
-    // Remove this booking’s seat update state
-    setSeatUpdates((prev) => {
-      const updated = { ...prev };
-      delete updated[booking.id];
-      return updated;
-    });
+      // Remove this booking’s seat update state
+      setSeatUpdates((prev) => {
+        const updated = { ...prev };
+        delete updated[booking.id];
+        return updated;
+      });
 
-    setUpdatingId(null);
-  };
+      setUpdatingId(null);
+    },
+    [seatUpdates, updateBooking]
+  );
 
   // Handle booking cancellation with simulated delay
-  const handleCancelBooking = async (bookingId: string) => {
-    setCancellingId(bookingId);
-    await delay(1000);
-    cancelBooking(bookingId);
-    alert("Cancelled booking successfully");
-    setCancellingId(null);
-  };
+  const handleCancelBooking = useCallback(
+    async (bookingId: string) => {
+      setCancellingId(bookingId);
+      await delay(1000);
+      cancelBooking(bookingId);
+      alert("Cancelled booking successfully");
+      setCancellingId(null);
+    },
+    [cancelBooking]
+  );
 
   return (
     <main className="p-6" role="main">

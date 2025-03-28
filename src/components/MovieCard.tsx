@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, memo } from "react";
 import { useBooking } from "../context/BookingContext";
 import { nanoid } from "nanoid";
 import { MovieCardProps } from "../model/movieModel";
 
 // This component displays a single movie card with booking options
-export const MovieCard = ({ movie }: MovieCardProps) => {
+const MovieCardComponent = ({ movie }: MovieCardProps) => {
   const { bookings, addBooking, movieSeatMap, user } = useBooking();
   const [seatCount, setSeatCount] = useState(1);
 
@@ -105,3 +105,5 @@ export const MovieCard = ({ movie }: MovieCardProps) => {
     </fieldset>
   );
 };
+
+export const MovieCard = memo(MovieCardComponent);
