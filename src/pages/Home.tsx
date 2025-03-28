@@ -30,11 +30,12 @@ export const Home = () => {
   return (
     <main className="p-6" role="main">
       <div>
-        {/* Page heading */}
-        <h1 className="text-2xl font-bold mb-4">Now Playing</h1>
+        {/* Page heading and reset button */}
+        <div className="mb-4 flex items-center justify-between">
+          {/* Page heading */}
+          <h1 className="text-2xl font-bold">Now Playing</h1>
 
-        {/* Reset Local Stored Data */}
-        <div className="mb-4 flex justify-end">
+          {/* Reset Local Stored Data */}
           <button
             onClick={() => handleResetStoredData()}
             disabled={resetting} // Disable button while resetting
