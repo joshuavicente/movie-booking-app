@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getNowPlayingMoviesService } from "../api/moviesService";
 import { delay } from "../utils/delayHelper";
-import { Movie } from "../model/movieModel";
+import { Movie, TMDBMovie } from "../model/movieModel";
 
 // This hook returns loading state, error, and the movie list
 export const useFetchMovies = () => {
@@ -24,7 +24,7 @@ export const useFetchMovies = () => {
         await delay(1000); // Simulate network delay
 
         // Transform TMDB response to match our Movie type
-        const transformedMovies = response.map((movie: any) => ({
+        const transformedMovies = response.map((movie: TMDBMovie) => ({
           id: movie.id.toString(),
           title: movie.title,
           description: movie.overview,

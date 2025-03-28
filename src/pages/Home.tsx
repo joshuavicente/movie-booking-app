@@ -11,12 +11,13 @@ export const Home = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const moviesPerPage = 10;
 
+  // Calculate the current movies to display based on pagination and the current page
   const indexOfLastMovie = currentPage * moviesPerPage;
   const indexOfFirstMovie = indexOfLastMovie - moviesPerPage;
   const currentMovies = movies.slice(indexOfFirstMovie, indexOfLastMovie);
-
   const totalPages = Math.ceil(movies.length / moviesPerPage);
 
+  // Function to handle resetting the of locally stored data
   const handleResetStoredData = async () => {
     if (window.confirm("Are you sure you want to reset the demo data?")) {
       setResetting(true);

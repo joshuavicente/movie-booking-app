@@ -4,7 +4,7 @@ import { nanoid } from "nanoid";
 import { MovieCardProps } from "../model/movieModel";
 
 export const MovieCard = ({ movie }: MovieCardProps) => {
-  const { bookings, addBooking, movieSeatMap } = useBooking();
+  const { bookings, addBooking, movieSeatMap, user } = useBooking();
   const [seatCount, setSeatCount] = useState(1);
 
   const availableSeats = movieSeatMap[movie.id] ?? movie.availableSeats;
@@ -30,6 +30,8 @@ export const MovieCard = ({ movie }: MovieCardProps) => {
       showtime: movie.showtime,
       seatCount,
       availableSeats,
+      username: user?.username ?? "",
+      userId: user?.id ?? "",
     };
 
     addBooking(newBooking);
