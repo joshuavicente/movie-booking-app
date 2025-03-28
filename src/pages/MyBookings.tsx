@@ -2,6 +2,7 @@ import { useBooking } from "../context/BookingContext";
 import { useState } from "react";
 import { Booking } from "../model/bookingModel";
 import { LoadingSpinner } from "../components/LoadingSpinner";
+import { BookingCard } from "../components/BookingCard";
 import { delay } from "../utils/delayHelper";
 
 export const MyBookings = () => {
@@ -54,65 +55,18 @@ export const MyBookings = () => {
             aria-label="List of booked movies"
           >
             {bookings.map((booking) => (
-              <div
+              <BookingCard
                 key={booking.id}
-                className="rounded-lg bg-white shadow-md p-5 border border-gray-200"
-                aria-label={`Booking card for ${booking.movieTitle}`}
-              >
-                <h2 className="text-lg font-semibold mb-2">
-                  {booking.movieTitle}
-                </h2>
-                <p className="text-gray-600 mb-1">
-                  Showtime: {booking.showtime}
-                </p>
-                <p className="text-gray-600 mb-3">
-                  Seat Count: {booking.seatCount}
-                </p>
-
-                <label
-                  htmlFor={`update-${booking.id}`}
-                  className="text-sm block mb-1"
-                >
-                  Update Seat Count (Max 10):
-                </label>
-                <input
-                  id={`update-${booking.id}`}
-                  type="number"
-                  min={1}
-                  max={10}
-                  value={seatUpdates[booking.id] ?? booking.seatCount}
-                  onChange={(e) =>
-                    setSeatUpdates((prev) => ({
-                      ...prev,
-                      [booking.id]: Math.min(Number(e.target.value), 10),
-                    }))
-                  }
-                  className="mb-2 w-24 rounded border p-1 text-sm"
-                />
-                <button
-                  onClick={() => handleUpdateBooking(booking)}
-                  disabled={
-                    // Prevent double clicks during update and if the seat count is unchanged
-                    updatingId === booking.id ||
-                    seatUpdates[booking.id] === undefined ||
-                    seatUpdates[booking.id] === booking.seatCount
-                  }
-                  className="mb-2 w-full rounded bg-blue-600 text-white py-2 hover:bg-blue-700 transition disabled:opacity-50 flex items-center justify-center gap-2"
-                >
-                  Update Booking
-                </button>
-
-                <button
-                  onClick={() => handleCancelBooking(booking.id)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") handleCancelBooking(booking.id);
-                  }}
-                  disabled={cancellingId === booking.id} // Prevent double clicks during cancellation
-                  className="w-full rounded bg-red-500 text-white py-2 hover:bg-red-600 transition disabled:opacity-50"
-                >
-                  Cancel Booking
-                </button>
-              </div>
+                booking={booking}
+                seatCount={seatUpdates[booking.id] ?? booking.seatCount}
+                isUpdating={updatingId === booking.id}
+                isCancelling={cancellingId === booking.id}
+                onSeatChange={(value) =>
+                  setSeatUpdates((prev) => ({ ...prev, [booking.id]: value }))
+                }
+                onUpdate={() => handleUpdateBooking(booking)}
+                onCancel={() => handleCancelBooking(booking.id)}
+              />
             ))}
           </div>
         </>
