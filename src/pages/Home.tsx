@@ -1,10 +1,22 @@
+import { useState } from "react";
 import { useFetchMovies } from "../hooks/useFetchMovies";
 import { MovieCard } from "../components/MovieCard";
 import { LoadingSpinner } from "../components/LoadingSpinner";
+import { delay } from "../utils/delayHelper";
 
 export const Home = () => {
   // Use custom hook to fetch movies from TMDB
   const { movies, loading, error, resetStoredData } = useFetchMovies();
+  const [resetting, setResetting] = useState(false);
+
+  const handleResetStoredData = async () => {
+    if (window.confirm("Are you sure you want to reset the demo data?")) {
+      setResetting(true);
+      await delay(1000); // Simulate network delay
+      resetStoredData();
+      window.location.reload();
+    }
+  };
 
   return (
     <main className="p-6" role="main">
@@ -12,7 +24,7 @@ export const Home = () => {
       <h1 className="text-2xl font-bold mb-4">Now Playing</h1>
 
       {/* Show spinner on loading state*/}
-      {loading && <LoadingSpinner />}
+      {(loading || resetting) && <LoadingSpinner />}
 
       {/* Error state */}
       {!loading && error && (
@@ -31,14 +43,8 @@ export const Home = () => {
       {/* Reset Local Stored Data */}
       <div className="mb-4 flex justify-end">
         <button
-          onClick={() => {
-            if (
-              window.confirm("Are you sure you want to reset the demo data?")
-            ) {
-              resetStoredData();
-              window.location.reload();
-            }
-          }}
+          onClick={() => handleResetStoredData()}
+          disabled={resetting} // Disable button while resetting
           className="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600"
         >
           Reset Demo
