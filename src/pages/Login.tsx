@@ -31,15 +31,21 @@ export const Login = () => {
 
   return (
     <main
-      className="min-h-screen flex items-center justify-center bg-gray-100"
+      className="min-h-screen flex flex-col items-center justify-center bg-gray-100"
       role="main"
     >
+      <h2 className="text-3xl font-bold mb-6 text-blue-700">
+        🎬 Movie Booking App
+      </h2>
+
       <form
         onSubmit={handleSubmit}
         className="bg-white p-8 rounded-lg shadow-md w-full max-w-sm"
         aria-labelledby="login-title"
       >
-        <h1 className="text-2xl font-bold mb-4 text-center">Login</h1>
+        <h1 className="text-2xl font-bold mb-4 text-center" id="login-title">
+          Login
+        </h1>
 
         {error && (
           <p
