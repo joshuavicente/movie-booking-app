@@ -9,45 +9,40 @@ import { userMock } from "../mocks/userMock";
 import { Booking } from "../model/bookingModel";
 import { User } from "../model/userModel";
 
-// Describes everything the context will store and expose
 type BookingContextType = {
-  bookings: Booking[]; // All current bookings
-  user: Omit<User, "password"> | null; // Logged in user info
+  bookings: Booking[];
+  user: Omit<User, "password"> | null;
   isLoggedIn: boolean;
   login: (username: string, password: string) => boolean;
   logout: () => void;
   addBooking: (booking: Booking) => void;
   updateBooking: (id: string, updated: Partial<Booking>) => void;
   cancelBooking: (id: string) => void;
-  movieSeatMap: Record<string, number>; // { [movieId]: availableSeats }
+  movieSeatMap: Record<string, number>;
 };
 
-// Sets up a new Context — basically a tool that allows data sharing across components
 const BookingContext = createContext<BookingContextType | undefined>(undefined);
 
-// Helper function to sync bookings to local storage by userId
+// Persist updated bookings while preserving other users' data
 const syncBookingsToLocalStorage = (
   userId: string,
   updatedBookings: Booking[]
 ) => {
   const storedBookings = localStorage.getItem("allBookings");
-  const checkBookings = storedBookings ? JSON.parse(storedBookings) : []; // Prevents app from crashing with JSON.parse(null) and ensures valid JSON
+  const checkBookings = storedBookings ? JSON.parse(storedBookings) : [];
   const otherUserBookings = checkBookings.filter(
-    // Other bookings that don't belong to the current user
     (b: Booking) => b.userId !== userId
   );
-  const mergedBookings = [...otherUserBookings, ...updatedBookings]; // Preserves bookings of other users and merges with current user's bookings
+  const mergedBookings = [...otherUserBookings, ...updatedBookings];
   localStorage.setItem("allBookings", JSON.stringify(mergedBookings));
 };
 
-// This is a wrapper component that holds the actual state and functions to share.
 export const BookingProvider = ({ children }: { children: ReactNode }) => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [user, setUser] = useState<Omit<User, "password"> | null>(null);
   const [movieSeatMap, setMovieSeatMap] = useState<Record<string, number>>({});
 
-  // This function checks if the username and password match the mock user
-  // and retrieves the bookings for that user
+  // Login logic — validate against mock users and load their bookings
   const login = (username: string, password: string): boolean => {
     const foundUser = userMock.data.find(
       (u) => u.username === username && u.password === password
@@ -62,7 +57,6 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
         );
         setBookings(userBookings);
 
-        // Calculate available seats for each movie for the logged-in user
         const seatMap: Record<string, number> = {};
         allBookingsStored.forEach((booking) => {
           seatMap[booking.movieId] = Math.max(
@@ -82,9 +76,9 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
     setBookings([]);
   };
 
-  // This function adds a new booking to the state and updates the available seats
+  // Add new booking and update seat count map
   const addBooking = (booking: Booking) => {
-    const seatCount = Math.min(booking.seatCount, 10); // Limit to 10 seats per booking
+    const seatCount = Math.min(booking.seatCount, 10);
     const previousCount =
       movieSeatMap[booking.movieId] ?? booking.availableSeats ?? 0;
     const bookingWithUser = {
@@ -100,14 +94,13 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
       return updatedBookings;
     });
 
-    // Update the available seats in the map
     setMovieSeatMap((prev) => ({
       ...prev,
       [booking.movieId]: Math.max(previousCount - seatCount, 0),
     }));
   };
 
-  // This function updates an existing booking and adjusts the available seats accordingly
+  // Update an existing booking and adjust seat map
   const updateBooking = (id: string, updated: Partial<Booking>) => {
     setBookings((prev) => {
       const updatedBookings = prev.map((b) => {
@@ -115,16 +108,12 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
           const oldSeatCount = b.seatCount;
           const newSeatCount = Math.min(updated.seatCount ?? oldSeatCount, 10);
           const diff = oldSeatCount - newSeatCount;
-
           const previousCount =
             movieSeatMap[b.movieId] ?? b.availableSeats ?? 0;
 
           setMovieSeatMap((map) => ({
             ...map,
-            [b.movieId]: Math.min(
-              Math.max(previousCount + diff, 0), // Ensure it doesn't go negative
-              50
-            ),
+            [b.movieId]: Math.min(Math.max(previousCount + diff, 0), 50),
           }));
 
           return { ...b, ...updated, seatCount: newSeatCount };
@@ -136,7 +125,7 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  // This function cancels a booking and updates the available seats accordingly
+  // Cancel a booking and restore seat availability
   const cancelBooking = (id: string) => {
     setBookings((prev) => {
       const bookingToCancel = prev.find((b) => b.id === id);
@@ -160,7 +149,7 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  // To load bookings for logged user from local storage on initial render
+  // On first load, calculate seat map from local storage
   useEffect(() => {
     const stored = localStorage.getItem("allBookings");
     if (stored) {
@@ -178,11 +167,10 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
-  // 'value' is the object being shared with any component that wants to consume this context
   const value: BookingContextType = {
     bookings,
     user,
-    isLoggedIn: !!user, // Converts user to a boolean, if it doesn't exist, it's false
+    isLoggedIn: !!user,
     login,
     logout,
     addBooking,
@@ -191,13 +179,12 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
     movieSeatMap,
   };
 
-  // {children} means any components inside this provider will be able to access this shared state
   return (
     <BookingContext.Provider value={value}>{children}</BookingContext.Provider>
   );
 };
 
-// A custom hook that allows any component to access the shared state or context data
+// Custom hook to consume booking context safely
 export const useBooking = () => {
   const context = useContext(BookingContext);
   if (!context)

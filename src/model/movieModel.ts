@@ -1,4 +1,4 @@
-// Define the shape of a Movie
+// Represents a transformed movie used throughout the app
 export type Movie = {
   id: string;
   title: string;
@@ -8,7 +8,7 @@ export type Movie = {
   poster: string;
 };
 
-// Define the shape of a Movie from TMDB API
+// Raw movie shape returned from TMDB API
 export type TMDBMovie = {
   id: number;
   title: string;
@@ -16,7 +16,7 @@ export type TMDBMovie = {
   poster_path: string | null;
 };
 
-// Define the props that MovieCard component will receive
+// Props expected by the MovieCard component
 export type MovieCardProps = Readonly<{
   movie: Movie;
 }>;

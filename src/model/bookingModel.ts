@@ -1,17 +1,16 @@
-// Represents each booking. When a user books a ticket,
-// one of these gets added to the state
+// Represents a single movie booking by a user
 export type Booking = {
   id: string;
   movieId: string;
   movieTitle: string;
   showtime: string;
   seatCount: number;
-  availableSeats?: number;
+  availableSeats?: number; // Optional, used for reference during updates
   username: string;
   userId: string;
 };
 
-// Represents the props that BookingCard component will receive
+// Props expected by the BookingCard component
 export type BookingCardProps = {
   booking: Booking;
   seatCount: number;

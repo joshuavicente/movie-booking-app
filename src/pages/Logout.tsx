@@ -8,18 +8,18 @@ export const Logout = () => {
   const { logout } = useBooking();
   const navigate = useNavigate();
 
-  const hasLoggedOut = useRef(false); // Prevents logout() from being called infinite times and ensure single logout
+  const hasLoggedOut = useRef(false); // Prevent multiple calls to logout()
 
   useEffect(() => {
-    let isMounted = true; // Prevents navigate("/") from being called after component unmount
+    let isMounted = true; // Prevent navigation after component unmount
 
     const logoutAndRedirect = async () => {
       if (!hasLoggedOut.current) {
-        logout(); // Clear user + bookings
+        logout(); // Clear user + bookings from context
         hasLoggedOut.current = true;
       }
 
-      await delay(1000);
+      await delay(1000); // Simulate delay for spinner visibility
 
       if (isMounted) {
         navigate("/"); // Redirect to login
@@ -28,6 +28,7 @@ export const Logout = () => {
 
     logoutAndRedirect();
 
+    // Cleanup to prevent state updates on unmounted component
     return () => {
       isMounted = false;
     };

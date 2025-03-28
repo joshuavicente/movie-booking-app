@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { useBooking } from "../context/BookingContext";
 
+// This component displays the header of the application with navigation links
 export const Header = () => {
   const { isLoggedIn, user } = useBooking();
 
@@ -16,7 +17,7 @@ export const Header = () => {
       {/* App title */}
       <div className="text-xl font-bold">🎟️ Movie Booking App</div>
 
-      {/* Navigation Links */}
+      {/* Navigation links to Home, My Bookings, and Logout */}
       <div className="flex gap-6 items-center">
         <NavLink
           to="/home"
@@ -49,7 +50,7 @@ export const Header = () => {
         </NavLink>
       </div>
 
-      {/* Logged in user info */}
+      {/* Display currently logged in username */}
       <div
         className="text-sm text-gray-600 italic"
         aria-label={`Logged in as ${user?.username}`}

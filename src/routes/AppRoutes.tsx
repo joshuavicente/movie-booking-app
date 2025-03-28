@@ -6,12 +6,14 @@ import { Logout } from "../pages/Logout";
 import { NotFound } from "../pages/NotFound";
 import { ProtectedRoute } from "./ProtectedRoute";
 
+// Defines the route structure of the app
 export const AppRoutes = () => {
   return (
     <Routes>
+      {/* Public route: Login */}
       <Route path="/" element={<Login />} />
 
-      {/* Protected Routes */}
+      {/* Protected routes (require login) */}
       <Route
         path="/home"
         element={
@@ -29,6 +31,7 @@ export const AppRoutes = () => {
         }
       />
 
+      {/* Public route: Logout + wildcard fallback */}
       <Route path="/logout" element={<Logout />} />
       <Route path="*" element={<NotFound />} />
     </Routes>

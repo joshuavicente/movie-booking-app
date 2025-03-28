@@ -7,30 +7,36 @@ import { delay } from "../utils/delayHelper";
 
 export const MyBookings = () => {
   const { bookings, cancelBooking, updateBooking } = useBooking();
+
   const [seatUpdates, setSeatUpdates] = useState<Record<string, number>>({});
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [cancellingId, setCancellingId] = useState<string | null>(null);
 
+  // Handle booking update with simulated delay
   const handleUpdateBooking = async (booking: Booking) => {
     const updatedCount = seatUpdates[booking.id] ?? booking.seatCount;
     setUpdatingId(booking.id);
-    await delay(1000); // Simulate a network delay
+    await delay(1000);
     updateBooking(booking.id, { seatCount: updatedCount });
     alert("Booking updated successfully");
+
+    // Remove this booking’s seat update state
     setSeatUpdates((prev) => {
       const updated = { ...prev };
       delete updated[booking.id];
       return updated;
     });
-    setUpdatingId(null); // Reset the updating state for the next action
+
+    setUpdatingId(null);
   };
 
+  // Handle booking cancellation with simulated delay
   const handleCancelBooking = async (bookingId: string) => {
     setCancellingId(bookingId);
-    await delay(1000); // Simulate a network delay
+    await delay(1000);
     cancelBooking(bookingId);
     alert("Cancelled booking successfully");
-    setCancellingId(null); // Reset the cancelling state for the next action
+    setCancellingId(null);
   };
 
   return (
@@ -44,12 +50,14 @@ export const MyBookings = () => {
         </p>
       ) : (
         <>
-          {/* Show spinner if a button action is made (Update or Cancel) */}
+          {/* Show spinner during update or cancellation */}
           {(updatingId || cancellingId) && (
             <div className="flex justify-center mb-4">
               <LoadingSpinner />
             </div>
           )}
+
+          {/* Render all bookings in a responsive grid */}
           <div
             className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
             aria-label="List of booked movies"

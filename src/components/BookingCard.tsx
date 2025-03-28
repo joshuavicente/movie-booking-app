@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { BookingCardProps } from "../model/bookingModel";
 
+// This component displays a single booking card with seat update and cancellation controls
 const BookingCardComponent = ({
   booking,
   seatCount,
@@ -15,10 +16,14 @@ const BookingCardComponent = ({
       className="rounded-lg bg-white shadow-md p-5 border border-gray-200"
       aria-label={`Booking card for ${booking.movieTitle}`}
     >
+      {/* Movie title */}
       <h2 className="text-lg font-semibold mb-2">{booking.movieTitle}</h2>
+
+      {/* Showtime and seat count */}
       <p className="text-gray-600 mb-1">Showtime: {booking.showtime}</p>
       <p className="text-gray-600 mb-3">Seat Count: {booking.seatCount}</p>
 
+      {/* Seat update input */}
       <label htmlFor={`update-${booking.id}`} className="text-sm block mb-1">
         Update Seat Count (Max 10):
       </label>
@@ -32,6 +37,7 @@ const BookingCardComponent = ({
         className="mb-2 w-24 rounded border p-1 text-sm"
       />
 
+      {/* Update booking button */}
       <button
         onClick={onUpdate}
         disabled={isUpdating || seatCount === booking.seatCount}
@@ -40,6 +46,7 @@ const BookingCardComponent = ({
         Update Booking
       </button>
 
+      {/* Cancel booking button */}
       <button
         onClick={onCancel}
         onKeyDown={(e) => e.key === "Enter" && onCancel()}
@@ -52,5 +59,5 @@ const BookingCardComponent = ({
   );
 };
 
-// Using memo which helps to prevent unnecessary re-renders of the component.
+// Memoize the BookingCardComponent to optimize performance by avoiding unnecessary re-renders
 export const BookingCard = memo(BookingCardComponent);

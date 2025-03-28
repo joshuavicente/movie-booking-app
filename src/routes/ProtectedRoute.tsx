@@ -2,13 +2,15 @@ import { Navigate } from "react-router-dom";
 import { useBooking } from "../context/BookingContext";
 import { JSX } from "react";
 
+// Route guard for protecting routes from unauthorized access
 export const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
-  const { isLoggedIn } = useBooking(); // If user is logged in, isLoggedIn will be true
+  const { isLoggedIn } = useBooking(); // Check login state from context
 
+  // Redirect to login if user is not authenticated
   if (!isLoggedIn) {
-    // Redirect to login page if user is not logged in
     return <Navigate to="/" replace />;
   }
 
+  // Render protected child route
   return children;
 };

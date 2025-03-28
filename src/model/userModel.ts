@@ -1,4 +1,4 @@
-// Defines a mock user model with an id, username, and password
+// Represents a user object used in mock login validation
 export type User = {
   id: string;
   username: string;
