@@ -37,6 +37,31 @@ npm run dev
 
 > The app will start locally on [http://localhost:5173](http://localhost:5173) by default.
 
+### 5. Edit or create mock user credentials
+
+Mock user data is located in the file:
+
+```
+/src/mocks/userMock.ts
+```
+
+Each user entry includes an `id`, `username`, and `password`. Example:
+
+```ts
+{
+  id: "11223344",
+  username: "user1",
+  password: "password123"
+}
+```
+
+📝 Guidelines:
+
+- `id` must be unique (use `nanoid()` if needed)
+- `username` must be unique
+- Passwords can be reused across users
+- Bookings are saved per user, so switching accounts will show different data
+
 ---
 
 ## 🧠 Features
