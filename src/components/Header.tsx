@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { Link } from "@tanstack/react-router";
 import { useBooking } from "../context/BookingContext";
 
 // This component displays the header of the application with navigation links
@@ -19,35 +19,33 @@ export const Header = () => {
 
       {/* Navigation links to Home, My Bookings, and Logout */}
       <div className="flex gap-6 items-center">
-        <NavLink
+        <Link
           to="/home"
-          className={({ isActive }) =>
-            isActive
-              ? "text-blue-600 font-semibold"
-              : "text-gray-700 hover:text-blue-500"
-          }
+          className="text-gray-700 hover:text-blue-500"
+          activeProps={{
+            className: "text-blue-600 font-semibold"
+          }}
           aria-label="Go to Home"
         >
           Home
-        </NavLink>
-        <NavLink
+        </Link>
+        <Link
           to="/my-bookings"
-          className={({ isActive }) =>
-            isActive
-              ? "text-blue-600 font-semibold"
-              : "text-gray-700 hover:text-blue-500"
-          }
+          className="text-gray-700 hover:text-blue-500"
+          activeProps={{
+            className: "text-blue-600 font-semibold"
+          }}
           aria-label="Go to My Bookings"
         >
           My Bookings
-        </NavLink>
-        <NavLink
+        </Link>
+        <Link
           to="/logout"
           className="text-gray-700 hover:text-red-500"
           aria-label="Logout"
         >
           Logout
-        </NavLink>
+        </Link>
       </div>
 
       {/* Display currently logged in username */}

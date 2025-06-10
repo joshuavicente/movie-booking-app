@@ -1,20 +1,19 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { App } from "./App";
+import { RouterProvider } from "@tanstack/react-router";
+import { router } from "./routes";
 import "./index.css";
-import { BrowserRouter } from "react-router-dom";
-import { BookingProvider } from "./context/BookingContext";
+import { BookingProvider, useBooking } from "./context/BookingContext";
 
-// Entry point: bootstraps the React app and wraps it with required providers
+export function RouterWithBookingContext() {
+  const booking =  useBooking();
+  return <RouterProvider router={router} context={{ booking }} />;
+}
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    {/* Enables client-side routing */}
-    <BrowserRouter>
-      {/* Provides global booking state context */}
-      <BookingProvider>
-        {/* Renders app layout and route logic */}
-        <App />
-      </BookingProvider>
-    </BrowserRouter>
+    <BookingProvider>
+      <RouterWithBookingContext />
+    </BookingProvider>
   </StrictMode>
 );

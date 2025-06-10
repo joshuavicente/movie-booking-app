@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from '@tanstack/react-router';
 import { useBooking } from "../context/BookingContext";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { delay } from "../utils/delayHelper";
@@ -22,7 +22,7 @@ export const Logout = () => {
       await delay(1000); // Simulate delay for spinner visibility
 
       if (isMounted) {
-        navigate("/"); // Redirect to login
+        navigate({ to: "/login" }); // Redirect to login
       }
     };
 

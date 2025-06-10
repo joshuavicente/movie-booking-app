@@ -11,14 +11,16 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.0.17",
+    "@tanstack/react-router": "^1.120.13",
+    "@tanstack/react-router-devtools": "^1.120.13",
     "axios": "^1.8.4",
     "classnames": "^2.5.1",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-router-dom": "^7.4.0"
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
+    "@tanstack/router-plugin": "^1.120.15",
     "@types/react": "^19.0.12",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",

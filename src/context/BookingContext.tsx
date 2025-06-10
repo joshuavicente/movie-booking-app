@@ -8,18 +8,7 @@ import {
 import { userMock } from "../mocks/userMock";
 import { Booking } from "../model/bookingModel";
 import { User } from "../model/userModel";
-
-type BookingContextType = {
-  bookings: Booking[];
-  user: Omit<User, "password"> | null;
-  isLoggedIn: boolean;
-  login: (username: string, password: string) => boolean;
-  logout: () => void;
-  addBooking: (booking: Booking) => void;
-  updateBooking: (id: string, updated: Partial<Booking>) => void;
-  cancelBooking: (id: string) => void;
-  movieSeatMap: Record<string, number>;
-};
+import { BookingContextType } from "../model/ContextModel";
 
 const BookingContext = createContext<BookingContextType | undefined>(undefined);
 

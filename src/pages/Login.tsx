@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from '@tanstack/react-router'
 import { useBooking } from "../context/BookingContext";
 
 export const Login = () => {
@@ -26,7 +26,7 @@ export const Login = () => {
       setError("Invalid credentials.");
     } else {
       // Redirect to home page upon successful login
-      navigate("/home");
+      navigate({ to: "/home" });
     }
   };
 
