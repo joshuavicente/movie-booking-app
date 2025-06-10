@@ -84,8 +84,7 @@ Each user entry includes an `id`, `username`, and `password`. Example:
 - 🧠 React Context API with built-in and custom hooks for global state, performance optimization and logic
 - 🗂️ LocalStorage (no backend)
 - 🍿 TMDB API (for movies)
-- 🔄 React Router
-- 🧪 ESLint + Prettier
+- 🔄 TanStack Router
 
 ---
 
