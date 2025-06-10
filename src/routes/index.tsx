@@ -7,6 +7,7 @@ import { LogoutRoute } from './logout-route';
 import { HomeRoute } from './_auth.home-route';
 import { MyBookingsRoute } from './_auth.my-bookings-route';
 import { NotFoundRoute } from './not-found-route';
+import { AdminRoute } from './_auth.admin-route';
 
 // Combine route tree
 export const routeTree = (root: typeof RootRoute) => root.addChildren([
@@ -14,6 +15,7 @@ export const routeTree = (root: typeof RootRoute) => root.addChildren([
   LogoutRoute,
   HomeRoute,
   MyBookingsRoute,
+  AdminRoute,
   NotFoundRoute,
 ]);
 

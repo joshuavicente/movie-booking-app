@@ -32,12 +32,12 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
   const [movieSeatMap, setMovieSeatMap] = useState<Record<string, number>>({});
 
   // Login logic — validate against mock users and load their bookings
-  const login = (username: string, password: string): boolean => {
+  const login = (username: string, password: string, role: string): boolean => {
     const foundUser = userMock.data.find(
-      (u) => u.username === username && u.password === password
+      (u) => u.username === username && u.password === password && u.role === role
     );
     if (foundUser) {
-      setUser({ id: foundUser.id, username: foundUser.username });
+      setUser({ id: foundUser.id, username: foundUser.username, role: foundUser.role });
       const stored = localStorage.getItem("allBookings");
       if (stored) {
         const allBookingsStored = JSON.parse(stored) as Booking[];
@@ -75,6 +75,7 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
       seatCount,
       username: user?.username || "",
       userId: user?.id || "",
+      userRole: user?.role || "",
     };
 
     setBookings((prev) => {

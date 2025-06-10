@@ -17,6 +17,7 @@ import { Route as LoginRouteImport } from './routes/login-route'
 import { Route as IndexImport } from './routes/index'
 import { Route as AuthMyBookingsRouteImport } from './routes/_auth.my-bookings-route'
 import { Route as AuthHomeRouteImport } from './routes/_auth.home-route'
+import { Route as AuthAdminRouteImport } from './routes/_auth.admin-route'
 
 // Create/Update Routes
 
@@ -56,6 +57,12 @@ const AuthHomeRouteRoute = AuthHomeRouteImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const AuthAdminRouteRoute = AuthAdminRouteImport.update({
+  id: '/_auth/admin-route',
+  path: '/admin-route',
+  getParentRoute: () => rootRoute,
+} as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -88,6 +95,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NotFoundRouteImport
       parentRoute: typeof rootRoute
     }
+    '/_auth/admin-route': {
+      id: '/_auth/admin-route'
+      path: '/admin-route'
+      fullPath: '/admin-route'
+      preLoaderRoute: typeof AuthAdminRouteImport
+      parentRoute: typeof rootRoute
+    }
     '/_auth/home-route': {
       id: '/_auth/home-route'
       path: '/home-route'
@@ -112,6 +126,7 @@ export interface FileRoutesByFullPath {
   '/login-route': typeof LoginRouteRoute
   '/logout-route': typeof LogoutRouteRoute
   '/not-found-route': typeof NotFoundRouteRoute
+  '/admin-route': typeof AuthAdminRouteRoute
   '/home-route': typeof AuthHomeRouteRoute
   '/my-bookings-route': typeof AuthMyBookingsRouteRoute
 }
@@ -121,6 +136,7 @@ export interface FileRoutesByTo {
   '/login-route': typeof LoginRouteRoute
   '/logout-route': typeof LogoutRouteRoute
   '/not-found-route': typeof NotFoundRouteRoute
+  '/admin-route': typeof AuthAdminRouteRoute
   '/home-route': typeof AuthHomeRouteRoute
   '/my-bookings-route': typeof AuthMyBookingsRouteRoute
 }
@@ -131,6 +147,7 @@ export interface FileRoutesById {
   '/login-route': typeof LoginRouteRoute
   '/logout-route': typeof LogoutRouteRoute
   '/not-found-route': typeof NotFoundRouteRoute
+  '/_auth/admin-route': typeof AuthAdminRouteRoute
   '/_auth/home-route': typeof AuthHomeRouteRoute
   '/_auth/my-bookings-route': typeof AuthMyBookingsRouteRoute
 }
@@ -142,6 +159,7 @@ export interface FileRouteTypes {
     | '/login-route'
     | '/logout-route'
     | '/not-found-route'
+    | '/admin-route'
     | '/home-route'
     | '/my-bookings-route'
   fileRoutesByTo: FileRoutesByTo
@@ -150,6 +168,7 @@ export interface FileRouteTypes {
     | '/login-route'
     | '/logout-route'
     | '/not-found-route'
+    | '/admin-route'
     | '/home-route'
     | '/my-bookings-route'
   id:
@@ -158,6 +177,7 @@ export interface FileRouteTypes {
     | '/login-route'
     | '/logout-route'
     | '/not-found-route'
+    | '/_auth/admin-route'
     | '/_auth/home-route'
     | '/_auth/my-bookings-route'
   fileRoutesById: FileRoutesById
@@ -168,6 +188,7 @@ export interface RootRouteChildren {
   LoginRouteRoute: typeof LoginRouteRoute
   LogoutRouteRoute: typeof LogoutRouteRoute
   NotFoundRouteRoute: typeof NotFoundRouteRoute
+  AuthAdminRouteRoute: typeof AuthAdminRouteRoute
   AuthHomeRouteRoute: typeof AuthHomeRouteRoute
   AuthMyBookingsRouteRoute: typeof AuthMyBookingsRouteRoute
 }
@@ -177,6 +198,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRouteRoute: LoginRouteRoute,
   LogoutRouteRoute: LogoutRouteRoute,
   NotFoundRouteRoute: NotFoundRouteRoute,
+  AuthAdminRouteRoute: AuthAdminRouteRoute,
   AuthHomeRouteRoute: AuthHomeRouteRoute,
   AuthMyBookingsRouteRoute: AuthMyBookingsRouteRoute,
 }
@@ -195,6 +217,7 @@ export const routeTree = rootRoute
         "/login-route",
         "/logout-route",
         "/not-found-route",
+        "/_auth/admin-route",
         "/_auth/home-route",
         "/_auth/my-bookings-route"
       ]
@@ -210,6 +233,9 @@ export const routeTree = rootRoute
     },
     "/not-found-route": {
       "filePath": "not-found-route.tsx"
+    },
+    "/_auth/admin-route": {
+      "filePath": "_auth.admin-route.tsx"
     },
     "/_auth/home-route": {
       "filePath": "_auth.home-route.tsx"

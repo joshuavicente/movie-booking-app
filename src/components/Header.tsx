@@ -19,26 +19,46 @@ export const Header = () => {
 
       {/* Navigation links to Home, My Bookings, and Logout */}
       <div className="flex gap-6 items-center">
-        <Link
-          to="/home"
-          className="text-gray-700 hover:text-blue-500"
-          activeProps={{
-            className: "text-blue-600 font-semibold"
-          }}
-          aria-label="Go to Home"
-        >
-          Home
-        </Link>
-        <Link
-          to="/my-bookings"
-          className="text-gray-700 hover:text-blue-500"
-          activeProps={{
-            className: "text-blue-600 font-semibold"
-          }}
-          aria-label="Go to My Bookings"
-        >
-          My Bookings
-        </Link>
+        {user?.role?.includes("admin") 
+          ? (
+            <>
+              <Link
+                to="/admin"
+                className="text-gray-700 hover:text-blue-500"
+                activeProps={{
+                  className: "text-blue-600 font-semibold"
+                }}
+                aria-label="Go to Admin"
+              >
+                Admin
+              </Link>
+            </>
+          )
+          : (
+            <>
+              <Link
+                to="/home"
+                className="text-gray-700 hover:text-blue-500"
+                activeProps={{
+                  className: "text-blue-600 font-semibold"
+                }}
+                aria-label="Go to Home"
+              >
+                Home
+              </Link>
+              <Link
+                to="/my-bookings"
+                className="text-gray-700 hover:text-blue-500"
+                activeProps={{
+                  className: "text-blue-600 font-semibold"
+                }}
+                aria-label="Go to My Bookings"
+              >
+                My Bookings
+              </Link>
+            </>
+          )
+        }
         <Link
           to="/logout"
           className="text-gray-700 hover:text-red-500"

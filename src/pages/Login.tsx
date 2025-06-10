@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from '@tanstack/react-router'
 import { useBooking } from "../context/BookingContext";
+import { roles } from "../common/enum";
 
 export const Login = () => {
   const { login } = useBooking();
@@ -8,6 +9,7 @@ export const Login = () => {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("user");
   const [error, setError] = useState("");
 
   // Handle form submission and trigger login logic
@@ -21,13 +23,16 @@ export const Login = () => {
     }
 
     // Attempt to log in with provided credentials
-    const success = login(username, password);
+    const success = login(username, password, role);
     if (!success) {
       setError("Invalid credentials.");
-    } else {
-      // Redirect to home page upon successful login
-      navigate({ to: "/home" });
-    }
+      return;
+    } 
+
+    // Redirect to home or admin page upon successful login
+    navigate({
+      to: role === 'admin' ? '/admin' : '/home',
+    })
   };
 
   return (
@@ -91,6 +96,25 @@ export const Login = () => {
           className="w-full mb-4 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
         />
+
+        {/* Role selection */}
+        <label htmlFor="role" className="block text-sm font-medium mb-1">
+          Role
+        </label>
+        <select
+          id="role"
+          name="role"
+          className="w-full mb-4 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          value={role}
+          onChange={(e) => setRole(e.target.value)}
+          aria-label="Select user role"
+        >
+          {roles.map(r => (
+            <option key={r} value={r}>
+              {r.charAt(0).toUpperCase() + r.slice(1)}
+            </option>
+          ))}
+        </select>
 
         {/* Submit button */}
         <button

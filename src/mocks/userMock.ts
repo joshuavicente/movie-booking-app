@@ -10,11 +10,19 @@ export const userMock = {
       id: "11223344",
       username: "user1",
       password: "password123",
+      role: "user",
     },
     {
       id: "22334455",
       username: "user2",
       password: "password123",
+      role: "user",
+    },
+    {
+      id: "33334455",
+      username: "admin",
+      password: "admin123",
+      role: "admin",
     },
   ],
 };
