@@ -6,14 +6,10 @@ export const HomeRoute = createRoute({
   path: '/home',
   getParentRoute: () => RootRoute,
 
-  // Runs before the route ever loads:
-  beforeLoad: ({ context, location }) => {
+  // Protected route - this runs before the route ever loads:
+  beforeLoad: ({ context }) => {
     if (!context.booking.isLoggedIn) {
-      throw redirect({
-        to: '/login',
-         // stash original URL so can redirect back after login
-        search: { redirect: location.href },
-      })
+      throw redirect({ to: '/login' });
     }
   },
 
